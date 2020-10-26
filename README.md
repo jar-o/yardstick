@@ -1,0 +1,2 @@
+# yardstick
+Benchmark arbitrary things
