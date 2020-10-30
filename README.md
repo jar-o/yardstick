@@ -3,7 +3,7 @@
 Benchmark arbitrary things in Go.
 
 Yardstick is a benchmarking library that allows you to benchmark anything.
-Think of it as the (Vegeta)[https://github.com/tsenart/vegeta] for arbitrary
+Think of it as the [Vegeta](https://github.com/tsenart/vegeta) for arbitrary
 code. (Because, quite honestly we're stealing everything we can from that
 excellent HTTP benchmark tool.)
 
@@ -23,7 +23,8 @@ attacker.RequestFunc = func(thing interface{}) (uint16, error) {
 }
 
 var metrics yardstick.Metrics
-for res := range attacker.Attack(yardstick.NewRate(100, time.Second), 10*time.Second, "my benchmark") {
+for res := range attacker.Attack(
+  yardstick.NewRate(100, time.Second), 10*time.Second, "my benchmark") {
   metrics.Add(res)
 }
 metrics.Close()
