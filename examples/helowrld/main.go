@@ -60,14 +60,15 @@ func main() {
 	//attacker.Targeter = MyCustomTargeter(attacker.RequestData...)
 
 	// Step 3, run your attack, collect metrics, profit.
-	var metrics yardstick.Metrics
+	metrics := yardstick.NewMetricsWithDefaults()
 	//                                         Rate per second            Duration        Test name
 	for res := range attacker.Attack(yardstick.NewRate(100, time.Second), 10*time.Second, "helowrld") {
 		metrics.Add(res)
 	}
 	metrics.Close()
 
-	fmt.Printf("99th percentile: %s\n", metrics.Latencies.P99)
-	m, _ := json.Marshal(metrics)
-	fmt.Printf("Metrics:\n%s\n", m)
+	m := metrics.Get()
+	fmt.Printf("99th percentile: %s\n", m.Latencies.P99)
+	mj, _ := json.Marshal(m)
+	fmt.Printf("Metrics:\n%s\n", mj)
 }

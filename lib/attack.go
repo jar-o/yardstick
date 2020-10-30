@@ -193,8 +193,6 @@ func NewRate(frequency int, dur time.Duration) vegeta.Rate {
 	}
 }
 
-type Metrics = vegeta.Metrics
-
 // Targeting, or how to get the RequestData into the RequestFunc for the
 // attack.
 type Targeter func(*interface{}) error
