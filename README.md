@@ -34,4 +34,8 @@ m, _ := json.Marshal(metrics)
 fmt.Printf("Metrics:\n%s\n", m)
 ```
 
+What `RequestFunc` can do is limited only by your imagination. You can
+benchmark anything, HTTP, RPC, Redis, Postgres, filesystem, USB,
+&lt;whatever device&gt;, etc.
+
 For a more detailed example see [Hello world](examples/helowrld/main.go).
