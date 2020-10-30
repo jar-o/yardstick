@@ -34,4 +34,4 @@ m, _ := json.Marshal(metrics)
 fmt.Printf("Metrics:\n%s\n", m)
 ```
 
-For a more detailed example see [Hello world](examples/helowrld).
+For a more detailed example see [Hello world](examples/helowrld/main.go).
