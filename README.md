@@ -22,7 +22,7 @@ attacker.RequestFunc = func(thing interface{}) (uint16, error) {
   return 0, nil
 }
 
-var metrics yardstick.Metrics
+metrics := yardstick.NewMetricsWithDefaults()
 for res := range attacker.Attack(
   yardstick.NewRate(100, time.Second), 10*time.Second, "my benchmark") {
   metrics.Add(res)
