@@ -9,6 +9,8 @@ import (
 	vegeta "github.com/tsenart/vegeta/lib"
 )
 
+type Metrics = vegeta.Metrics
+
 type YMetrics struct {
 	m               *vegeta.Metrics
 	successCodes    map[uint16]bool
@@ -44,6 +46,6 @@ func (o *YMetrics) Close() {
 	o.m.Success = float64(o.successOverride) / float64(o.m.Requests)
 }
 
-func (o *YMetrics) Get() *vegeta.Metrics {
-	return o.m
+func (o *YMetrics) Get() Metrics {
+	return *o.m
 }
