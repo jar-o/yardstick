@@ -29,8 +29,8 @@ for res := range attacker.Attack(
 }
 metrics.Close()
 
-fmt.Printf("99th percentile: %s\n", metrics.Latencies.P99)
-m, _ := json.Marshal(metrics)
+fmt.Printf("99th percentile: %s\n", metrics.Get().Latencies.P99)
+m, _ := json.Marshal(metrics.Get())
 fmt.Printf("Metrics:\n%s\n", m)
 ```
 
