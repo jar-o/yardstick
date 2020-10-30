@@ -1,6 +1,9 @@
 package yardstick
 
-// A very skinny shim over vegeta.Metrics. The only assumption vegeta.Metrics makes that doesn't work for Yardstick is that it defaults to HTTP status codes for success/failure. This shim overrides those
+// A very skinny shim over vegeta.Metrics. The only assumption vegeta.Metrics
+// makes that doesn't work for Yardstick is that it defaults to HTTP status
+// codes for success/failure. This shim allows you to override those with
+// custom codes.
 
 import (
 	vegeta "github.com/tsenart/vegeta/lib"
