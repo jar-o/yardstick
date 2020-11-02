@@ -16,10 +16,14 @@ attacker := yardstick.NewAttacker()
 attacker.AddRequestData(SomeData{...})
 attacker.AddRequestData(SomeData{...})
 
-attacker.RequestFunc = func(thing interface{}) (uint16, error) {
+attacker.RequestFunc = func(thing interface{}) (yardstick.ResponseData, error) {
   data, ok := thing.(SomeData)
+  ret := yardstick.ResponseData{}
+
   ... do something ...
-  return 0, nil
+
+  ret.Code = 0
+  return ret, nil
 }
 
 metrics := yardstick.NewMetricsWithDefaults()
