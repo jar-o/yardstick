@@ -48,9 +48,7 @@ func (o *YMetrics) Close() {
 	// vegeta.Metrics.success value.
 	o.m.Success = float64(o.successOverride) / float64(o.m.Requests)
 	o.m.Throughput = float64(o.successOverride)
-	o.m.Rate = float64(o.m.Requests)
 	if secs := o.m.Duration.Seconds(); secs > 0 {
-		o.m.Rate /= secs
 		o.m.Throughput /= (o.m.Duration + o.m.Wait).Seconds()
 	}
 }
