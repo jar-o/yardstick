@@ -43,17 +43,23 @@ func main() {
 	attacker.AddRequestData(TestThing{Ohai: "emiterror"})
 
 	// Step 2, create your custom request function. It can do whatever you want.
-	attacker.RequestFunc = func(thing interface{}) (uint16, error) {
+	attacker.RequestFunc = func(thing interface{}) (yardstick.ResponseData, error) {
 		testthing, ok := thing.(TestThing)
+		ret := yardstick.ResponseData{}
 		if !ok {
-			return 1, fmt.Errorf("Not ok %+v", testthing)
+			ret.Code = 1
+			return ret, fmt.Errorf("Not ok %+v", testthing)
 		}
 		time.Sleep(250 * time.Millisecond)
-		fmt.Println(testthing.Ohai)
+		fmt.Printf("# %s\n", testthing.Ohai)
+		ret.BytesIn += uint64(len(testthing.Ohai))
+		ret.BytesOut += uint64(len(testthing.Ohai))
 		if testthing.Ohai == "emiterror" {
-			return 2, fmt.Errorf("Some error")
+			ret.Code = 2
+			return ret, fmt.Errorf("Some error")
 		}
-		return 0, nil
+		ret.Code = 0
+		return ret, nil
 	}
 
 	// Optionally, add your own targeter. If you don't, a basic round-robin targeter is used.
@@ -68,7 +74,7 @@ func main() {
 	metrics.Close()
 
 	m := metrics.Get()
-	fmt.Printf("99th percentile: %s\n", m.Latencies.P99)
+	fmt.Printf("# 99th percentile: %s\n", m.Latencies.P99)
 	mj, _ := json.Marshal(m)
-	fmt.Printf("Metrics:\n%s\n", mj)
+	fmt.Printf("# Metrics:\n%s\n", mj)
 }

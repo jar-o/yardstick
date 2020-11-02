@@ -22,9 +22,15 @@ type Attacker struct {
 	seq         uint64
 	began       time.Time
 	chunked     bool
-	RequestFunc func(interface{}) (uint16, error)
+	RequestFunc func(interface{}) (ResponseData, error)
 	RequestData []interface{}
 	Targeter    Targeter
+}
+
+type ResponseData struct {
+	Code     uint16
+	BytesIn  uint64
+	BytesOut uint64
 }
 
 const (
@@ -154,7 +160,7 @@ func (a *Attacker) attack(name string, workers *sync.WaitGroup, ticks <-chan str
 
 func (a *Attacker) hit(name string) *vegeta.Result {
 	var err error
-	var code uint16
+	var resp ResponseData
 
 	res := vegeta.Result{Attack: name}
 
@@ -166,7 +172,6 @@ func (a *Attacker) hit(name string) *vegeta.Result {
 
 	defer func() {
 		res.Latency = time.Since(res.Timestamp)
-		res.Code = code
 		if err != nil {
 			res.Error = err.Error()
 		}
@@ -182,7 +187,10 @@ func (a *Attacker) hit(name string) *vegeta.Result {
 		panic("Um, you need to define a RequestFunc.")
 	}
 
-	code, err = a.RequestFunc(thing)
+	resp, err = a.RequestFunc(thing)
+	res.BytesIn = resp.BytesIn
+	res.BytesOut = resp.BytesOut
+	res.Code = resp.Code
 	return &res
 }
 

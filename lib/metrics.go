@@ -36,6 +36,7 @@ func NewMetrics(successCodes []uint16) *YMetrics {
 
 func (o *YMetrics) Add(r *vegeta.Result) {
 	o.m.Add(r)
+	// Yardstick tracks success codes from user defined values.
 	if _, ok := o.successCodes[r.Code]; ok {
 		o.successOverride++
 	}
@@ -43,7 +44,14 @@ func (o *YMetrics) Add(r *vegeta.Result) {
 
 func (o *YMetrics) Close() {
 	o.m.Close()
+	// This overrides the values calculated from the internal
+	// vegeta.Metrics.success value.
 	o.m.Success = float64(o.successOverride) / float64(o.m.Requests)
+	o.m.Throughput = float64(o.successOverride)
+	if secs := o.m.Duration.Seconds(); secs > 0 {
+		o.m.Rate /= secs
+		o.m.Throughput /= (o.m.Duration + o.m.Wait).Seconds()
+	}
 }
 
 func (o *YMetrics) Get() Metrics {
