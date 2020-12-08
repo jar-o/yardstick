@@ -1,4 +1,4 @@
-![](aux/yardstick.png)
+![](misc/yardstick.png)
 
 Benchmark arbitrary things in Go.
 
